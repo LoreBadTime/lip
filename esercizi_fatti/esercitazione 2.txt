@@ -76,3 +76,24 @@ let string_of_list x = "[" ^ get_infisso x ^ "]";;
 string_of_list [];;
 string_of_list [1];;
 string_of_list [1;2;3];;
+
+
+
+8)
+
+let extract y = match y with a::b -> a;;
+
+let rec count b v = match b with
+    x::y -> if x == v then 1 + count y v else 0;;
+
+let rec ignore_until c v = match c,v with
+    (x::y::[],_) -> []|
+    (x::y,0) -> y|
+    (x::y,_) -> ignore_until y (v-1);;
+  
+let rec crush x = match x with 
+    [] -> []|
+    x::y -> if x == extract y then crush (ignore_until y (count y x)) else [x] @ crush y
+;;
+  
+crush [1;1;2;1;1;3;2;1;1;1;3;3;1;1;2;3];;
