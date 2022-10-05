@@ -1,40 +1,3 @@
-1)
-
-let rec get x y z = match x,y,z with 
-    (x,[],z) -> failwith "index out of bounds"|
-    (x,a::b,z) when x > z -> get x b (z+1)
-  | (x,a::b,z) when x == z -> a;;
-
-let rec without x y = match (x,y) with
-    (x,[]) -> []| 
-    (x,a::b) when x == a -> [] @ without x b|
-    (x,a::b) when x != a -> [a] @ without x b;;
-
-let extract x y = (get x y 0,without (get x y 0) y);;
-
-extract 0 [1;2;3];;
-extract 1 [1;2;3];;
-extract 2 [1;2;3];;
-extract 3 [1;2;3];;
-
-2)
-let check_position x y = match x with
-    x when (x mod 2 == 0) -> y mod 2 == 0 |
-    x when (x mod 2 == 1) -> y mod 2 == 1;;
-
-let rec alt_supp x y = 
-  if check_position x y then 
-    if y > 10 then alt_supp (x+1) (y/10) 
-    else check_position x y
-  else false;;
-
-let alt_even x = alt_supp 0 x;;
-
-alt_even 1234;;
-alt_even 8;;
-alt_even 72;;
-
-alt_even 3;;alt_even 51;;alt_even 8234;;
 
 3)
 
@@ -76,10 +39,51 @@ let string_of_list x = "[" ^ get_infisso x ^ "]";;
 string_of_list [];;
 string_of_list [1];;
 string_of_list [1;2;3];;
+____________________________________________________________________________
+5)
+
+let rec get x y z = match x,y,z with 
+    (x,[],z) -> failwith "index out of bounds"|
+    (x,a::b,z) when x > z -> get x b (z+1)
+  | (x,a::b,z) when x == z -> a;;
+
+let rec without x y = match (x,y) with
+    (x,[]) -> []| 
+    (x,a::b) when x == a -> [] @ without x b|
+    (x,a::b) when x != a -> [a] @ without x b;;
+
+let extract x y = (get x y 0,without (get x y 0) y);;
+
+extract 0 [1;2;3];;
+extract 1 [1;2;3];;
+extract 2 [1;2;3];;
+extract 3 [1;2;3];;
+____________________________________________________________________________
 
 
 
-8)
+6)
+let check_position x y = match x with
+    x when (x mod 2 == 0) -> y mod 2 == 0 |
+    x when (x mod 2 == 1) -> y mod 2 == 1;;
+
+let rec alt_supp x y = 
+  if check_position x y then 
+    if y > 10 then alt_supp (x+1) (y/10) 
+    else check_position x y
+  else false;;
+
+let alt_even x = alt_supp 0 x;;
+
+alt_even 1234;;
+alt_even 8;;
+alt_even 72;;
+
+alt_even 3;;alt_even 51;;alt_even 8234;;
+
+____________________________________________________________________________
+
+10)
 
 let extract y = match y with a::b -> a;;
 
