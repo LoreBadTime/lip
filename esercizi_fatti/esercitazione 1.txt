@@ -75,14 +75,16 @@ minfun g 0 7
 
 11)
 
- let rec fib_calc x = match x with 
+let rec fib_calc x = match x with 
     0 -> 0|
     1 -> 1|
     x -> fib_calc (x-2) + fib_calc (x-1);;
 
-let rec fib x = match x with 
-    0 -> []|
-    x ->fib (x-1) @ [fib_calc(x)];;
+let rec fib_ro x = match x with 
+    0 -> [0]|
+    x ->fib_ro (x-1) @ [fib_calc(x)];;
+
+let fib x = fib_ro(x-1);;
 
 fib 10;; 
   

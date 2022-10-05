@@ -1,0 +1,78 @@
+1)
+
+let rec get x y z = match x,y,z with 
+    (x,[],z) -> failwith "index out of bounds"|
+    (x,a::b,z) when x > z -> get x b (z+1)
+  | (x,a::b,z) when x == z -> a;;
+
+let rec without x y = match (x,y) with
+    (x,[]) -> []| 
+    (x,a::b) when x == a -> [] @ without x b|
+    (x,a::b) when x != a -> [a] @ without x b;;
+
+let extract x y = (get x y 0,without (get x y 0) y);;
+
+extract 0 [1;2;3];;
+extract 1 [1;2;3];;
+extract 2 [1;2;3];;
+extract 3 [1;2;3];;
+
+2)
+let check_position x y = match x with
+    x when (x mod 2 == 0) -> y mod 2 == 0 |
+    x when (x mod 2 == 1) -> y mod 2 == 1;;
+
+let rec alt_supp x y = 
+  if check_position x y then 
+    if y > 10 then alt_supp (x+1) (y/10) 
+    else check_position x y
+  else false;;
+
+let alt_even x = alt_supp 0 x;;
+
+alt_even 1234;;
+alt_even 8;;
+alt_even 72;;
+
+alt_even 3;;alt_even 51;;alt_even 8234;;
+
+3)
+
+let convert_digit x = match x with 
+    9 -> "9"|8 -> "8"|7 -> "7"|6 -> "6"|5 -> "5"|4 -> "4"|3 -> "3"|2 -> "2"|1->"1"|0 -> "0";;
+
+let rec pow x y = match y with 
+    _ when (x == 0 && (y == 0 || y == 1)) -> failwith "errore potenza" |
+    0 -> 1|
+    _ -> x*pow (x) (y-1)
+
+let rec number_of_digits x y = match x,y with 
+    (x,y) when x < 10 -> y + 1|
+    (x,y) when x > 10 -> number_of_digits (x/10) (y+1);; 
+
+let rec take_away x y k =
+  if (y-k*pow(10)(x-1)) >= pow(10)(x-1) 
+  then take_away x y (k+1) 
+  else k;;
+
+let rec int_to_list x = match x with
+    x when x > 10 -> [(take_away (number_of_digits x 0) x 0)] @ int_to_list (x/10)|
+    _ -> [x] ;;
+
+let rec extract_digits x = match x with
+    a::[] -> convert_digit a|
+    a::b -> convert_digit a ^ extract_digits b;; 
+;;
+
+
+let rec get_infisso x = match x with 
+    [] -> ""|
+    a::[] -> extract_digits (int_to_list a) |
+    a::b -> extract_digits (int_to_list a) ^ ";" ^ get_infisso b;;
+
+let string_of_list x = "[" ^ get_infisso x ^ "]";;
+  
+
+string_of_list [];;
+string_of_list [1];;
+string_of_list [1;2;3];;
