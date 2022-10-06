@@ -175,9 +175,6 @@ let rec without x y = match (x,y) with
 
 let extract x y = (get x y 0,without (get x y 0) y);; 
 
-
-
-
 let rec randomizer x num = 
   if num > 0 then match (extract ((Random.int num)) x) with (a,b) -> [a] @ randomizer b (num - 1) else match (extract 0 x) with (j,k) -> [j];;
 
@@ -194,8 +191,9 @@ let rec check_complete x y = match (x,y) with
 
 let is_complete x = check_complete (generator ()) x ;;
 
-is_complete (randomizer (generator ()) 39) ;;
+let gen_deck () = randomizer (generator ()) 39 ;;
 
+is_complete (gen_deck ());;
 
 
 
