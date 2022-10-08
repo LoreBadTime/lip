@@ -195,8 +195,6 @@ let gen_deck () = randomizer (generator ()) 39 ;;
 
 is_complete (gen_deck ());;
 
-
-
 10)
 
 let extract y = match y with a::b -> a;;

@@ -1,5 +1,5 @@
 *~
 *.pdf
 ./LIP/*.pdf
-./LIP
+./LIP/*
 ./esercizi_fatti
