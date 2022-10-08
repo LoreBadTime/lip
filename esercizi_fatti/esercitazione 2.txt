@@ -194,7 +194,53 @@ let is_complete x = check_complete (generator ()) x ;;
 let gen_deck () = randomizer (generator ()) 39 ;;
 
 is_complete (gen_deck ());;
+____________________________________________________________________________
+9) VERSIONE VARIABILI
 
+let pump k i j l = 
+  let rec prefix y m = match m with a::b -> 
+    if y < i then [a] @ prefix (y+1) b
+    else [] 
+  in
+  let rec middle x m = match m with a::b -> 
+    if x < i then middle (x+1) b
+    else if x < j then [a] @ middle (x+1) b else []
+  in let rec sufix f m = match m with 
+        a::b -> if f < j then sufix (f+1) b else [a] @ sufix (f+1) b|
+        [] -> [];
+  in let rec pumper x = match x with 0 -> [] | _ -> (middle 0 l) @ pumper (x-1);
+  in (prefix 0 l) @  (pumper k)  @ (sufix 0 l) ;;
+
+pump 0 2 5 [1;2;3;4;5;6;7];;
+                                
+pump 1 2 5 [1;2;3;4;5;6;7];;               
+  
+pump 2 2 5 [1;2;3;4;5;6;7];;
+
+10) VERSIONE RICORSIVA
+
+let rec prefix y m i  = match m with a::b -> 
+  if y < i then [a] @ prefix (y+1) b i
+  else [] 
+;;
+let rec middle x m i j = match m with a::b -> 
+  if x < i then middle (x+1) b i j
+  else if x < j then [a] @ middle (x+1) b i j else []
+;;
+let rec sufix f m j = match m with 
+    a::b -> if f < j then sufix (f+1) b j else [a] @ sufix (f+1) b j|
+    [] -> [];;
+
+let rec pumper x i j l = match x with 0 -> [] | _ -> (middle 0 l i j) @ pumper (x-1) i j l;;
+
+let pump k i j l = (prefix 0 l i) @  (pumper k i j l)  @ (sufix 0 l j) ;;
+
+pump 0 2 5 [1;2;3;4;5;6;7];;
+                                
+pump 1 2 5 [1;2;3;4;5;6;7];;               
+  
+pump 2 2 5 [1;2;3;4;5;6;7];;
+____________________________________________________________________________
 10)
 
 let extract y = match y with a::b -> a;;
