@@ -260,3 +260,35 @@ let rec crush x = match x with
   
 crush [1;1;2;1;1;3;2;1;1;1;3;3;1;1;2;3];;
 
+11)
+
+let extract x = match x with a::b -> a ;; 
+
+let rec lister value list counter =
+  match list with 
+    x::[] -> [Some(value,counter)] |
+    a::b -> if a == extract b then lister a b (counter+1) else [Some(value,counter)] @ lister (extract b) b 1 | 
+    [] -> [] ;;
+
+let rec get counter l = match l with 
+    Some(a,k)::b -> if k > counter then get k b else get counter b|
+    [] -> counter;;
+let rec get_max l max_numbers_in_list = match l with 
+    a::b -> (match a with Some(j,k) -> if k == max_numbers_in_list then (j,k) else get_max b max_numbers_in_list) |
+    _ -> failwith "";;
+
+type 'a option = None | Some of 'a * int;;
+  
+
+let longsub l = match (lister (extract l) l 1) with 
+    Some(a,k)::[] -> Some(a,k)|
+    b -> let (a,k) = (get_max b (get 0 b)) in Some(a,k) |
+    [] -> None;;
+
+longsub ["lol";"lol"];;
+
+longsub [1;1;3;3];;
+
+longsub [1;2;2;2;1;1];;
+
+longsub [1;1;2;2;2;1;1;1;1];;
