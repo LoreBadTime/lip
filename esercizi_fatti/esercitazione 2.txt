@@ -292,3 +292,66 @@ longsub [1;1;3;3];;
 longsub [1;2;2;2;1;1];;
 
 longsub [1;1;2;2;2;1;1;1;1];;
+
+
+____________________________________________________________________________
+let l0 = [1;5;2;5;1;6];;
+let l1 = [1;5;2;5;4;3];;
+let l2 = [1;5;2;3;2;4];;
+let l3 = [3;1;4;2;5;3];;
+
+let rec is_relation x = match x with 
+    a::b -> (match b with 
+        k::j::[] -> if ((a < k && k > j)||(a > k && k < j)) then true else false|
+        k::j::l -> if ((a < k && k > j)||(a > k && k < j)) then is_relation b else false);; 
+     
+let rec consecutive x = match x with 
+    a::b -> (match b with 
+        k::[] -> if (a == k) then false else true|
+        k::l -> if (a == k) then false else consecutive b);;
+
+let alt x = is_relation x && consecutive x;;
+
+let rec get_min x y = match x with
+    a::[] -> if a < y then a else y|
+    a::b -> if a < y then get_min b a else get_min b y;;
+    
+
+let rec get_jumps x = match x with 
+    a::b -> (match b with 
+        k::[] -> 
+          if (a < k) then 
+            if (k - a) > 1 then  
+              [(k - a)]
+            else []
+          else
+          if (a - k) > 1 then  
+            [(a - k)] 
+          else [] |
+        k::l -> 
+          if (a < k) then 
+            if (k - a) > 1 then  
+              [(k - a)] @ get_jumps b 
+            else get_jumps b
+          else
+          if (a - k) > 1 then  
+            [(a - k)] @ get_jumps b 
+          else get_jumps b );;
+
+let rec check_ping_pong l value = match l with 
+    a::b -> (match b with 
+        j::[] -> if ((a + value < j)||(a > j + value)) then true else false|
+        j::k -> if ((a + value < j)||(a > j + value)) then check_ping_pong b value else false);;
+
+let ping_pong x = if alt x then
+    match x with a::b ->
+      check_ping_pong x (get_min (get_jumps x) a) else false;;
+
+ping_pong l0;;
+ping_pong l1;;
+ping_pong l2;;
+ping_pong l2;;
+
+
+
+				
