@@ -1,5 +1,6 @@
 *~
 <<<<<<< HEAD
+<<<<<<< HEAD
 *.pdf
 ./LIP/*.pdf
 ./LIP/*
@@ -9,4 +10,8 @@ LIP/
 _build
 =======
 **/_build
+>>>>>>> main
+=======
+**/_build
+*.opam
 >>>>>>> main
